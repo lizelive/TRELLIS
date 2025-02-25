@@ -1,0 +1,11 @@
+# syntax=docker/dockerfile:1.13
+FROM nvcr.io/nvidia/pytorch:24.12-py3
+USER root
+ENV TORCH_CUDA_ARCH_LIST=8.0;8.9
+
+
+ADD setup.sh /tmp/setup.sh
+RUN --mount=type=cache,target=/root/.cache/pip . /tmp/setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast
+
+
+# git+https://github.com/graphdeco-inria/diff-gaussian-rasterization.git
