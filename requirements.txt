@@ -1,0 +1,9 @@
+xformers
+torchao
+diffusers[torch]
+transformers
+accelerate
+peft
+sentencepiece
+beautifulsoup4
+ftfy

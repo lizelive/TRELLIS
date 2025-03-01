@@ -423,9 +423,10 @@ def to_glb(
     faces = mesh.faces.cpu().numpy()
     
     # mesh postprocess
+    print("postprocess mesh")
     vertices, faces = postprocess_mesh(
         vertices, faces,
-        simplify=simplify > 0,
+        simplify=False,
         simplify_ratio=simplify,
         fill_holes=fill_holes,
         fill_holes_max_hole_size=fill_holes_max_size,
@@ -435,9 +436,10 @@ def to_glb(
         debug=debug,
         verbose=verbose,
     )
-
+    print("parametrize mesh")
     # parametrize mesh
     vertices, faces, uvs = parametrize_mesh(vertices, faces)
+    print("bake")
 
     # bake texture
     observations, extrinsics, intrinsics = render_multiview(app_rep, resolution=1024, nviews=100)
@@ -447,7 +449,7 @@ def to_glb(
     texture = bake_texture(
         vertices, faces, uvs,
         observations, masks, extrinsics, intrinsics,
-        texture_size=texture_size, mode='opt',
+        texture_size=texture_size, mode='fast',
         lambda_tv=0.01,
         verbose=verbose
     )
