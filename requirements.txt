@@ -7,3 +7,5 @@ peft
 sentencepiece
 beautifulsoup4
 ftfy
+protobuf
+git+https://github.com/huggingface/image_gen_aux.git
