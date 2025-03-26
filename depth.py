@@ -22,14 +22,13 @@ dtype = torch.bfloat16
 quant_type = "int8_weight_only"
 quantization_config = TorchAoConfig(quant_type)
 
-depth_pipe = pipeline(task="depth-estimation", model="depth-anything/Depth-Anything-V2-Small-hf", model_kwargs={
-    "quantization_config": quantization_config
-}, use_fast=True)
+# depth_pipe = pipeline(task="depth-estimation", model="depth-anything/Depth-Anything-V2-Small-hf", model_kwargs={
+#     "quantization_config": quantization_config
+# }, use_fast=True)
 
 
 model_id = "black-forest-labs/FLUX.1-Depth-dev"
 
-save_dir = Path("/tmp")/model_id/quant_type
 
 
 def preprocess_depth_control_image(control_image):
@@ -65,17 +64,18 @@ def load_from_hf(model_id) -> FluxControlPipeline:
     )
     return pipe
 
-# pipe = load_from_hf(model_id)
+pipe = load_from_hf(model_id)
 # pipe.save_pretrained(save_dir, safe_serialization=False)
-pipe = FluxControlPipeline.from_pretrained(save_dir, torch_dtype=dtype, use_safetensors=False)
+# pipe = FluxControlPipeline.from_pretrained(save_dir, torch_dtype=dtype, use_safetensors=False)
 # pipe.enable_sequential_cpu_offload()
 pipe.enable_model_cpu_offload()
 
-prompt = "A robot made of exotic candies and chocolates of different kinds. The background is filled with confetti and celebratory gifts."
-control_image = load_image(
-    "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/robot.png")
+prompt = "a 3d model of an Etheral character from the game SS13, with blue skin and glowing eyes. They should also holding a staff with a spiral design on top."
+# control_image = load_image("https://media.discordapp.net/attachments/1294558841861570561/1345696211281248277/OIG4.png?ex=67d9ec02&is=67d89a82&hm=805f1177ecf36e06ceec4cfca26b04b255899e8823302b156625a7c2e0dc19d8&=&format=webp&quality=lossless")
+# control_image = load_image("https://th.bing.com/th/id/OIG4.23fJCwrU1z5jT5AF5S70?pid=ImgGn")
+# control_image = preprocess_depth_control_image(control_image)
 
-control_image = preprocess_depth_control_image(control_image)
+control_image = load_image("assets/example_image/depth_control.png")
 
 image = pipe(
     prompt=prompt,
@@ -86,4 +86,5 @@ image = pipe(
     guidance_scale=10.0,
     generator=torch.Generator().manual_seed(42),
 ).images[0]
+print("saving")
 image.save("output.png")

@@ -8,4 +8,5 @@ sentencepiece
 beautifulsoup4
 ftfy
 protobuf
-git+https://github.com/huggingface/image_gen_aux.git
+onnxruntime-genai-cuda==0.7.0rc1
+# git+https://github.com/huggingface/image_gen_aux.git

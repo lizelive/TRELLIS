@@ -27,3 +27,5 @@ for lib in "$driver_dir"/*.so.1; do
         fi
     fi
 done
+
+export LD_LIBRARY_PATH=$(printf "%s:" /root/.local/lib/python3.11/site-packages/nvidia/*/lib/)
