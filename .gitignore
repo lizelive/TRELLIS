@@ -403,3 +403,4 @@ gradio_cached_examples/
 
 output*.png
 /*.webp
+model/
