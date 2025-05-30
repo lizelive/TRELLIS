@@ -13,12 +13,12 @@ from transformers import CLIPTextModel, CLIPTextModelWithProjection
 # from torchao.dtypes import CutlassInt4PackedLayout as QuantLayout
 # torchao_quantization_config = int8_dynamic_activation_int4_weight(group_size=-1, layout=QuantLayout())
 
-# quant_type = "int8_weight_only"
-# quant_type = "int4dq"
 quant_type = "int8_weight_only"
+# quant_type = "int4dq"
+# quant_type = "int8dq"
 # quant_type = None
 diffusers_quantization_config = DiffusersTorchAoConfig(
-    quant_type, group_size=-1) if quant_type is not None else None
+    quant_type) if quant_type is not None else None
 
 #
 

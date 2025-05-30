@@ -1,6 +1,7 @@
 import torch
 
 
+
 import torchao.dtypes
 torch.serialization.add_safe_globals([torchao.dtypes.MarlinQQQTensor])
 
@@ -26,16 +27,16 @@ from with_timer import Timer
 torch_dtype = torch.bfloat16
 
 pipe = StableDiffusionXLControlNetPipeline.from_pretrained(
-    "./model/sdxl-lightning-depth-controlnet", torch_dtype=torch_dtype, use_safetensors=False).to("cuda:0")
+    "./model/sdxl-lightning-depth-controlnet", torch_dtype=torch_dtype, use_safetensors=False).to("cuda")
 
 # disable the progress bar
 pipe.set_progress_bar_config(disable=True)  
 
 # pipe.fuse_qkv_projections()
 
-# compile_mode = "max-autotune"
-pipe.unet = torch.compile(pipe.unet, mode="default", fullgraph=True, dynamic=False)
-pipe.vae.decode = torch.compile(pipe.vae.decode, mode="default", fullgraph=True, dynamic=False)
+compile_mode = "max-autotune"
+pipe.unet = torch.compile(pipe.unet, mode=compile_mode, fullgraph=True, dynamic=False)
+pipe.vae.decode = torch.compile(pipe.vae.decode, mode=compile_mode, fullgraph=True, dynamic=False)
 
 
 
